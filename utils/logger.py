@@ -18,6 +18,8 @@ else:
     from .nvinfo import gpu_info, visible_gpus, nvsmi_available
     from .functions import MovingAverage
 
+    
+
 class Log:
     """
     A class to log information during training per information and save it out.

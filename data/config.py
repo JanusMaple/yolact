@@ -43,6 +43,8 @@ COCO_CLASSES = ('person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus',
                 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase',
                 'scissors', 'teddy bear', 'hair drier', 'toothbrush')
 
+CABINET_CLASSES = ('cabinet_door', 'cabinet_handle')
+
 COCO_LABEL_MAP = { 1:  1,  2:  2,  3:  3,  4:  4,  5:  5,  6:  6,  7:  7,  8:  8,
                    9:  9, 10: 10, 11: 11, 13: 12, 14: 13, 15: 14, 16: 15, 17: 16,
                   18: 17, 19: 18, 20: 19, 21: 20, 22: 21, 23: 22, 24: 23, 25: 24,
@@ -53,6 +55,10 @@ COCO_LABEL_MAP = { 1:  1,  2:  2,  3:  3,  4:  4,  5:  5,  6:  6,  7:  7,  8:  8
                   62: 57, 63: 58, 64: 59, 65: 60, 67: 61, 70: 62, 72: 63, 73: 64,
                   74: 65, 75: 66, 76: 67, 77: 68, 78: 69, 79: 70, 80: 71, 81: 72,
                   82: 73, 84: 74, 85: 75, 86: 76, 87: 77, 88: 78, 89: 79, 90: 80}
+
+CABINET_LABEL_MAP = {
+    0: 1, 1: 2, 2: 3
+}
 
 
 
@@ -104,6 +110,7 @@ class Config(object):
 
 
 # ----------------------- DATASETS ----------------------- #
+
 dataset_base = Config({
     'name': 'Base Dataset',
 
@@ -125,6 +132,20 @@ dataset_base = Config({
     # provide a map from category_id -> index in class_names + 1 (the +1 is there because it's 1-indexed).
     # If not specified, this just assumes category ids start at 1 and increase sequentially.
     'label_map': None
+})
+
+cabinet_dataset = dataset_base.copy({
+    'name': 'Cabinet Dataset',
+
+    'train_images': 'C:/Users/Janus/Desktop/OpenCabinet/Cabinet_Data',
+    'train_info': 'C:/Users/Janus/Desktop/OpenCabinet/CoCoData/train.json',
+
+    'valid_images': 'C:/Users/Janus/Desktop/OpenCabinet/Cabinet_Data',
+    'valid_info': 'C:/Users/Janus/Desktop/OpenCabinet/CoCoData/val.json',
+
+    'class_names': CABINET_CLASSES,
+
+    'label_map': CABINET_LABEL_MAP
 })
 
 coco2014_dataset = dataset_base.copy({
@@ -656,8 +677,8 @@ yolact_base_config = coco_base_config.copy({
     'name': 'yolact_base',
 
     # Dataset stuff
-    'dataset': coco2017_dataset,
-    'num_classes': len(coco2017_dataset.class_names) + 1,
+    'dataset': cabinet_dataset,
+    'num_classes': len(cabinet_dataset.class_names) + 1,
 
     # Image Size
     'max_size': 550,
@@ -700,6 +721,13 @@ yolact_base_config = coco_base_config.copy({
     'crowd_iou_threshold': 0.7,
 
     'use_semantic_segmentation_loss': True,
+})
+
+cabinet_config = coco_base_config.copy({
+    'name': 'cabinet_dataset_config',
+
+    'dataset': cabinet_dataset,
+    'num_classes': len(cabinet_dataset.class_names) + 1,
 })
 
 yolact_im400_config = yolact_base_config.copy({

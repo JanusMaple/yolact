@@ -1,0 +1,3 @@
+python train.py --config=yolact_base_config --batch_size=2 --nms???
+
+python eval.py --trained_model=weights/yolact_base_181_1629_interrupt.pth --dataset=cabinet_dataset --images=pre_images:post_images --config=yolact_base_config
